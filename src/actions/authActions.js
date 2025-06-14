@@ -52,3 +52,13 @@ exports.getUsersByIds = async (ids) => {
   );
   return data;
 };
+
+exports.sendOtpForLogin = async (body) => {
+  const { data } = await allServices.authService.post("/api/sendOtpForLogin", body);
+  return data;
+};
+
+exports.verifyOtpForLogin = async (body) => {
+  const { data } = await allServices.authService.post("/api/verifyOtpForLogin", body);
+  return data;
+};

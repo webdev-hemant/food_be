@@ -3,6 +3,8 @@ const {
   registerUser,
   loginUser,
   generateAdminToken,
+  sendOtpForLogin,
+  verifyOtpForLogin,
 } = require("../actions/authActions");
 const globalState = require("../utils/globalState");
 
@@ -94,5 +96,48 @@ exports.getUserDetailsCntr = async (req, res) => {
     res.send(userDetails);
   } catch (error) {
     res.status(400).json({ error: error.message });
+  }
+};
+
+exports.sendOtpForLoginCntr = async (req, res) => {
+  try {
+    const { mobileNumber } = req.body;
+
+    const data = await sendOtpForLogin({
+      mobileNumber,
+    });
+
+    res.send(data);
+  } catch (error) {
+    console.error({ loginError: error.message });
+    res
+      .status(500)
+      .json(
+        error.response.data || {
+          message: error.message || "Internal server error",
+        }
+      );
+  }
+};
+
+exports.verifyOtpForLoginCntr = async (req, res) => {
+  try {
+    const { mobileNumber, otp } = req.body;
+
+    const data = await verifyOtpForLogin({
+      mobileNumber,
+      otp
+    });
+
+    res.send(data);
+  } catch (error) {
+    console.error({ loginError: error.message });
+    res
+      .status(500)
+      .json(
+        error.response.data || {
+          message: error.message || "Internal server error",
+        }
+      );
   }
 };
