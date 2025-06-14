@@ -2,7 +2,7 @@ const { ADMIN_EMAIL, ADMIN_PASSWORD } = require("../config/allEnv");
 const allServices = require("../services/instances");
 
 exports.getAllUsers = async (token) => {
-  const { data } = await allServices.authService.get("/api/auth/getAllUsers", {
+  const { data } = await allServices.authService.get("/api/getAllUsers", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -12,20 +12,20 @@ exports.getAllUsers = async (token) => {
 
 exports.registerUser = async (body) => {
   const { data } = await allServices.authService.post(
-    "/api/auth/register",
+    "/api/register",
     body
   );
   return data;
 };
 
 exports.loginUser = async (body) => {
-  const { data } = await allServices.authService.post("/api/auth/login", body);
+  const { data } = await allServices.authService.post("/api/login", body);
   return data;
 };
 
 exports.verifyToken = async (token) => {
   const { data } = await allServices.authService.get(
-    "/api/auth/getUserDetails",
+    "/api/getUserDetails",
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -40,14 +40,14 @@ exports.generateAdminToken = async () => {
     usernameOrEmail: ADMIN_EMAIL,
     password: ADMIN_PASSWORD,
   };
-  const response = await allServices.authService.post("/api/auth/login", body);
+  const response = await allServices.authService.post("/api/login", body);
   const token = response?.data?.token;
   return token;
 };
 
 exports.getUsersByIds = async (ids) => {
   const { data } = await allServices.authService.post(
-    "/api/auth/getUsersByIds",
+    "/api/getUsersByIds",
     { ids }
   );
   return data;
