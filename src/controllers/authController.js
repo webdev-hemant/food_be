@@ -34,7 +34,7 @@ exports.getAllUsers = async (req, res) => {
     res
       .status(500)
       .json(
-        error.response.data || {
+        error?.response?.data || {
           message: error.message || "Internal server error",
         }
       );
@@ -61,7 +61,7 @@ exports.register = async (req, res) => {
     res
       .status(500)
       .json(
-        error.response.data || {
+        error?.response?.data || {
           message: error.message || "Internal server error",
         }
       );
@@ -83,7 +83,7 @@ exports.login = async (req, res) => {
     res
       .status(500)
       .json(
-        error.response.data || {
+        error?.response?.data || {
           message: error.message || "Internal server error",
         }
       );
@@ -113,7 +113,7 @@ exports.sendOtpForLoginCntr = async (req, res) => {
     res
       .status(500)
       .json(
-        error.response.data || {
+        error?.response?.data || {
           message: error.message || "Internal server error",
         }
       );
@@ -135,7 +135,7 @@ exports.verifyOtpForLoginCntr = async (req, res) => {
     res
       .status(500)
       .json(
-        error.response.data || {
+        error?.response?.data || {
           message: error.message || "Internal server error",
         }
       );

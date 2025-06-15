@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const sequelize = require("./src/config/db");
 const authRoutes = require("./src/routes/authRoutes");
+const healthProfileRoutes = require("./src/routes/userHealthProfileRoutes");
 const chatRoutes = require("./src/routes/chatRoutes");
 const { SERVER_PORT } = require("./src/config/allEnv");
 
@@ -19,6 +20,7 @@ app.use(express.json());
 app.get("/", (req, res) => res.json({ message: "It's working!" }));
 
 app.use("/api/auth", authRoutes);
+app.use("/api/healthProfile", healthProfileRoutes);
 app.use("/api/chat", chatRoutes);
 
 const startServer = async () => {
@@ -26,7 +28,7 @@ const startServer = async () => {
     await sequelize.authenticate();
     console.log("Database connected successfully.");
 
-    await sequelize.sync(); // Create tables if they don't exist
+    await sequelize.sync({ alter: true }) // Create tables if they don't exist and update them if they do
 
     const PORT = SERVER_PORT;
     app.listen(PORT, () => {
