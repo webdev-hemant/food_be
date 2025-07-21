@@ -23,15 +23,6 @@ const startServer = async () => {
     await sequelize.authenticate();
     console.log("Database connected successfully.");
 
-    // Initialize AdminJS dynamically
-    const AdminJS = (await import("adminjs")).default;
-    const AdminJSExpress = (await import("@adminjs/express")).default;
-    const adminOptions = (await import("./src/admin/admin.config.js")).default;
-
-    const admin = new AdminJS(adminOptions);
-    const adminRouter = AdminJSExpress.buildRouter(admin);
-    app.use(admin.options.rootPath, adminRouter);
-
     app.get("/", (req, res) => res.json({ message: "It's working!" }));
 
     app.use("/api/auth", authRoutes);
@@ -43,7 +34,6 @@ const startServer = async () => {
     const PORT = SERVER_PORT;
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
-      console.log(`🛠 AdminJS available at http://localhost:${PORT}${admin.options.rootPath}`);
     });
   } catch (error) {
     console.error("Unable to connect to the database:", error);
