@@ -5,6 +5,8 @@ const sequelize = require("./src/config/db");
 const authRoutes = require("./src/routes/authRoutes");
 const healthProfileRoutes = require("./src/routes/userHealthProfileRoutes");
 const chatRoutes = require("./src/routes/chatRoutes");
+const mealLogRoutes = require("./src/routes/mealLogRoutes");
+const goalRoutes = require("./src/routes/goalRoutes");
 const { SERVER_PORT } = require("./src/config/allEnv");
 
 const app = express();
@@ -14,25 +16,34 @@ app.use(
     origin: "*",
   })
 );
-
 app.use(express.json());
-
-app.get("/", (req, res) => res.json({ message: "It's working!" }));
-
-app.use("/api/auth", authRoutes);
-app.use("/api/healthProfile", healthProfileRoutes);
-app.use("/api/chat", chatRoutes);
 
 const startServer = async () => {
   try {
     await sequelize.authenticate();
     console.log("Database connected successfully.");
 
-    await sequelize.sync({ alter: true }) // Create tables if they don't exist and update them if they do
+    // Initialize AdminJS dynamically
+    const AdminJS = (await import("adminjs")).default;
+    const AdminJSExpress = (await import("@adminjs/express")).default;
+    const adminOptions = (await import("./src/admin/admin.config.js")).default;
+
+    const admin = new AdminJS(adminOptions);
+    const adminRouter = AdminJSExpress.buildRouter(admin);
+    app.use(admin.options.rootPath, adminRouter);
+
+    app.get("/", (req, res) => res.json({ message: "It's working!" }));
+
+    app.use("/api/auth", authRoutes);
+    app.use("/api/healthProfile", healthProfileRoutes);
+    app.use("/api/chat", chatRoutes);
+    app.use("/api/meals", mealLogRoutes);
+    app.use("/api/goals", goalRoutes);
 
     const PORT = SERVER_PORT;
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
+      console.log(`🛠 AdminJS available at http://localhost:${PORT}${admin.options.rootPath}`);
     });
   } catch (error) {
     console.error("Unable to connect to the database:", error);

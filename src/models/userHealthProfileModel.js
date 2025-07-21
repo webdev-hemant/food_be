@@ -12,7 +12,7 @@ const UserHealthProfile = sequelize.define(
     userId: {
       type: DataTypes.UUID,
       allowNull: false,
-      unique: true, // 🚀 one-to-one relationship — one profile per user
+      unique: true, // One-to-one relationship with User
     },
     age: {
       type: DataTypes.INTEGER,
@@ -20,7 +20,7 @@ const UserHealthProfile = sequelize.define(
       validate: { min: 0 },
     },
     gender: {
-      type: DataTypes.ENUM("Male", "Female", "Other"),
+      type: DataTypes.STRING, // Changed from ENUM to STRING
       allowNull: true,
     },
     height: {
@@ -32,24 +32,11 @@ const UserHealthProfile = sequelize.define(
       allowNull: true,
     },
     activityLevel: {
-      type: DataTypes.ENUM(
-        "Sedentary",     // little to no exercise
-        "Lightly Active", // light exercise/sports 1-3 days/week
-        "Moderately Active", // moderate exercise/sports 3-5 days/week
-        "Very Active", // hard exercise 6-7 days a week
-        "Super Active" // very intense training or physical job
-      ),
+      type: DataTypes.STRING, // Changed from ENUM to STRING
       allowNull: true,
     },
     healthGoal: {
-      type: DataTypes.ENUM(
-        "Lose Weight",
-        "Maintain Weight",
-        "Gain Muscle",
-        "Improve Endurance",
-        "Improve Flexibility",
-        "General Fitness"
-      ),
+      type: DataTypes.STRING, // Changed from ENUM to STRING
       allowNull: true,
     },
   },
