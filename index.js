@@ -9,6 +9,7 @@ const mealLogRoutes = require("./src/routes/mealLogRoutes");
 const goalRoutes = require("./src/routes/goalRoutes");
 const recipeRoutes = require("./src/routes/recipeRoutes");
 const { SERVER_PORT } = require("./src/config/allEnv");
+const ingredientsRoutes = require("./src/routes/ingridientsRoutes");
 
 const app = express();
 
@@ -31,6 +32,7 @@ const startServer = async () => {
     app.use("/api/chat", chatRoutes);
     app.use("/api/meals", mealLogRoutes);
     app.use("/api/recipes", recipeRoutes);
+    app.use("/api/ingredients", ingredientsRoutes);
     app.use("/api/goals", goalRoutes);
 
     const PORT = SERVER_PORT;
