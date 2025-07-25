@@ -59,16 +59,18 @@ exports.createOrUpdateMealLog = async (req, res) => {
 exports.getMealLogForDate = async (req, res) => {
   const userId = req.user.id;
   const date = req.params.date;
-  console.log({date});
-  
 
   try {
-    const log = await MealLog.findOne({ where: { userId, date } });
-    if (!log) return res.status(404).json({ message: "Meal log not found" });
+    const logs = await MealLog.findAll({ where: { userId, date } });
 
-    res.status(200).json({ message: "Success", data: log });
+    if (!logs || logs.length === 0) {
+      return res.status(404).json({ message: "No meal logs found for this date" });
+    }
+
+    res.status(200).json({ message: "Success", data: logs });
   } catch (err) {
-    console.error(err);
+    console.error("Error fetching meal logs:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
+
